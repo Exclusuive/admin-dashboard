@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
+import { StatCard } from "./common/StatCard";
 
 interface WebhookEvent {
   id: string;
@@ -448,28 +449,22 @@ export function Orders() {
       {/* Order Stats */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">전체 이벤트</h3>
-            <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">최근 24시간</h3>
-            <p className="text-2xl font-bold text-blue-600">
-              {stats.last24Hours}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">성공한 결제</h3>
-            <p className="text-2xl font-bold text-green-600">
-              {stats.byType["payment_intent.succeeded"] || 0}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">실패한 결제</h3>
-            <p className="text-2xl font-bold text-red-600">
-              {stats.byType["payment_intent.payment_failed"] || 0}
-            </p>
-          </div>
+          <StatCard title="전체 이벤트" value={stats.total} color="default" />
+          <StatCard
+            title="최근 24시간"
+            value={stats.last24Hours}
+            color="blue"
+          />
+          <StatCard
+            title="성공한 결제"
+            value={stats.byType["payment_intent.succeeded"] || 0}
+            color="green"
+          />
+          <StatCard
+            title="실패한 결제"
+            value={stats.byType["payment_intent.payment_failed"] || 0}
+            color="red"
+          />
         </div>
       )}
 

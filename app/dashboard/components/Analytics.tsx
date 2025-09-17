@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { KPICard } from "./common/KPICard";
 
 export function Analytics() {
   const [selectedPeriod, setSelectedPeriod] = useState("month");
@@ -30,76 +31,35 @@ export function Analytics() {
       </div>
 
       {/* 핵심 KPI 하이라이트 카드 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium opacity-90 mb-2">
-                Web3 결제 비중
-              </h3>
-              <p className="text-3xl font-bold">35%</p>
-              <p className="text-sm opacity-90 mt-1">+12% MoM</p>
-            </div>
-            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium opacity-90 mb-2">
-                Web3 재구매율
-              </h3>
-              <p className="text-3xl font-bold">28%</p>
-              <p className="text-sm opacity-90 mt-1">vs Web2 15%</p>
-            </div>
-            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium opacity-90 mb-2">
-                리워드 활용률
-              </h3>
-              <p className="text-3xl font-bold">72%</p>
-              <p className="text-sm opacity-90 mt-1">+5% MoM</p>
-            </div>
-            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium opacity-90 mb-2">활성 멤버</h3>
-              <p className="text-2xl font-bold">12,340</p>
-              <p className="text-sm opacity-90 mt-1">명</p>
-            </div>
-            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
-              </svg>
-            </div>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <KPICard
+          title="Web3 결제 비중"
+          value="35%"
+          subtitle="+12% MoM"
+          color="blue"
+          size="lg"
+        />
+        <KPICard
+          title="Web3 재구매율"
+          value="28%"
+          subtitle="vs Web2 15%"
+          color="purple"
+          size="lg"
+        />
+        <KPICard
+          title="리워드 활용률"
+          value="72%"
+          subtitle="+5% MoM"
+          color="orange"
+          size="lg"
+        />
+        <KPICard
+          title="활성 멤버"
+          value="12,340"
+          subtitle="명"
+          color="indigo"
+          size="lg"
+        />
       </div>
 
       {/* 매출/거래 지표 */}
@@ -108,34 +68,30 @@ export function Analytics() {
           매출/거래 지표
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              총 결제 건수
-            </h4>
-            <p className="text-2xl font-bold text-blue-600">8,456</p>
-            <p className="text-sm text-green-600 mt-1">+15.3%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              총 결제 금액
-            </h4>
-            <p className="text-2xl font-bold text-green-600">₩127.8M</p>
-            <p className="text-sm text-green-600 mt-1">+22.1%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              평균 결제 금액
-            </h4>
-            <p className="text-2xl font-bold text-purple-600">₩15,120</p>
-            <p className="text-sm text-green-600 mt-1">+5.8%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              Web3 Adoption Rate
-            </h4>
-            <p className="text-2xl font-bold text-orange-600">35%</p>
-            <p className="text-sm text-green-600 mt-1">+12%</p>
-          </div>
+          <KPICard
+            title="총 결제 건수"
+            value="8,456"
+            color="blue"
+            trend={{ value: "+15.3%", isPositive: true }}
+          />
+          <KPICard
+            title="총 결제 금액"
+            value="₩127.8M"
+            color="green"
+            trend={{ value: "+22.1%", isPositive: true }}
+          />
+          <KPICard
+            title="평균 결제 금액"
+            value="₩15,120"
+            color="purple"
+            trend={{ value: "+5.8%", isPositive: true }}
+          />
+          <KPICard
+            title="Web3 Adoption Rate"
+            value="35%"
+            color="orange"
+            trend={{ value: "+12%", isPositive: true }}
+          />
         </div>
 
         {/* 결제 수단 비율 */}
@@ -250,30 +206,30 @@ export function Analytics() {
           고객 리텐션/행동 지표
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">재구매율</h4>
-            <p className="text-2xl font-bold text-blue-600">23.5%</p>
-            <p className="text-sm text-green-600 mt-1">+3.2%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              Web3 재방문율
-            </h4>
-            <p className="text-2xl font-bold text-green-600">28%</p>
-            <p className="text-sm text-gray-500 mt-1">vs Web2 15%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">평균 LTV</h4>
-            <p className="text-2xl font-bold text-purple-600">₩89,500</p>
-            <p className="text-sm text-green-600 mt-1">+12.8%</p>
-          </div>
-          <div className="text-center">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">
-              신규 전환율
-            </h4>
-            <p className="text-2xl font-bold text-orange-600">67%</p>
-            <p className="text-sm text-green-600 mt-1">+8.5%</p>
-          </div>
+          <KPICard
+            title="재구매율"
+            value="23.5%"
+            color="blue"
+            trend={{ value: "+3.2%", isPositive: true }}
+          />
+          <KPICard
+            title="Web3 재방문율"
+            value="28%"
+            subtitle="vs Web2 15%"
+            color="green"
+          />
+          <KPICard
+            title="평균 LTV"
+            value="₩89,500"
+            color="purple"
+            trend={{ value: "+12.8%", isPositive: true }}
+          />
+          <KPICard
+            title="신규 전환율"
+            value="67%"
+            color="orange"
+            trend={{ value: "+8.5%", isPositive: true }}
+          />
         </div>
       </div>
 
@@ -400,38 +356,34 @@ export function Analytics() {
           세그먼트 분석
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-700 mb-2">
-              High Spenders
-            </h4>
-            <p className="text-2xl font-bold text-blue-600">1,234</p>
-            <p className="text-sm text-blue-600 mt-1">상위 10%</p>
-            <p className="text-xs text-gray-500 mt-2">매출 기여도 45%</p>
-          </div>
-          <div className="text-center p-4 bg-red-50 rounded-lg">
-            <h4 className="text-sm font-medium text-red-700 mb-2">
-              Dormant Users
-            </h4>
-            <p className="text-2xl font-bold text-red-600">3,456</p>
-            <p className="text-sm text-red-600 mt-1">30일+ 미방문</p>
-            <p className="text-xs text-gray-500 mt-2">재활성화 대상</p>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <h4 className="text-sm font-medium text-green-700 mb-2">
-              Web3 Shifters
-            </h4>
-            <p className="text-2xl font-bold text-green-600">2,890</p>
-            <p className="text-sm text-green-600 mt-1">Web2→Web3</p>
-            <p className="text-xs text-gray-500 mt-2">전환율 23%</p>
-          </div>
-          <div className="text-center p-4 bg-purple-50 rounded-lg">
-            <h4 className="text-sm font-medium text-purple-700 mb-2">
-              신규 가입자
-            </h4>
-            <p className="text-2xl font-bold text-purple-600">567</p>
-            <p className="text-sm text-purple-600 mt-1">이번 주</p>
-            <p className="text-xs text-gray-500 mt-2">전환율 67%</p>
-          </div>
+          <KPICard
+            title="High Spenders"
+            value="1,234"
+            subtitle="상위 10%"
+            description="매출 기여도 45%"
+            color="blue"
+          />
+          <KPICard
+            title="Dormant Users"
+            value="3,456"
+            subtitle="30일+ 미방문"
+            description="재활성화 대상"
+            color="red"
+          />
+          <KPICard
+            title="Web3 Shifters"
+            value="2,890"
+            subtitle="Web2→Web3"
+            description="전환율 23%"
+            color="green"
+          />
+          <KPICard
+            title="신규 가입자"
+            value="567"
+            subtitle="이번 주"
+            description="전환율 67%"
+            color="purple"
+          />
         </div>
       </div>
     </div>

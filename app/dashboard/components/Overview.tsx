@@ -1,3 +1,5 @@
+import { KPICard, TierCard, ActivityItem } from "./common/KPICard";
+
 export function Overview() {
   // Mock data for Web3 payment and membership metrics
   const transactionKPIs = {
@@ -37,31 +39,30 @@ export function Overview() {
 
       {/* Executive Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow p-6 text-white">
-          <h3 className="text-lg font-semibold mb-2">Web3 Payment Share</h3>
-          <p className="text-3xl font-bold">
-            {transactionKPIs.web3AdoptionRate}%
-          </p>
-          <p className="text-sm opacity-90">301,230,000 payments</p>
-        </div>
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg shadow p-6 text-white">
-          <h3 className="text-lg font-semibold mb-2">Savings → Rewards</h3>
-          <p className="text-3xl font-bold">
-            {savingsRewardsKPIs.savingsToRewardsRatio}%
-          </p>
-          <p className="text-sm opacity-90">
-            ₩{savingsRewardsKPIs.totalSavings.toLocaleString()} saved
-          </p>
-        </div>
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-lg shadow p-6 text-white">
-          <h3 className="text-lg font-semibold mb-2">Web3 Retention</h3>
-          <p className="text-3xl font-bold">
-            {retentionKPIs.web3RetentionRate}%
-          </p>
-          <p className="text-sm opacity-90">
-            vs Web2 {retentionKPIs.web2RetentionRate}%
-          </p>
-        </div>
+        <KPICard
+          title="Web3 Payment Share"
+          value={`${transactionKPIs.web3AdoptionRate}%`}
+          subtitle="301,230,000 payments"
+          variant="gradient"
+          color="blue"
+          size="lg"
+        />
+        <KPICard
+          title="Savings → Rewards"
+          value={`${savingsRewardsKPIs.savingsToRewardsRatio}%`}
+          subtitle={`₩${savingsRewardsKPIs.totalSavings.toLocaleString()} saved`}
+          variant="gradient"
+          color="green"
+          size="lg"
+        />
+        <KPICard
+          title="Web3 Retention"
+          value={`${retentionKPIs.web3RetentionRate}%`}
+          subtitle={`vs Web2 ${retentionKPIs.web2RetentionRate}%`}
+          variant="gradient"
+          color="orange"
+          size="lg"
+        />
       </div>
 
       {/* Transaction KPIs */}
@@ -71,41 +72,30 @@ export function Overview() {
           Transaction KPIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Total Transactions
-            </h4>
-            <p className="text-2xl font-bold text-blue-600">
-              {transactionKPIs.totalTransactions.thisMonth.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500">This month</p>
-            <p className="text-xs text-green-600 mt-1"></p>
-          </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Web3 Adoption Rate
-            </h4>
-            <p className="text-2xl font-bold text-purple-600">
-              {transactionKPIs.web3AdoptionRate}%
-            </p>
-            <p className="text-xs text-gray-500">
-              vs Web2 {100 - transactionKPIs.web3AdoptionRate}%
-            </p>
-          </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">GMV</h4>
-            <p className="text-2xl font-bold text-green-600">
-              ₩{(transactionKPIs.gmv / 1000000).toFixed(1)}M
-            </p>
-            <p className="text-xs text-gray-500">Gross Merchandise Volume</p>
-          </div>
-          <div className="bg-orange-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">AOV</h4>
-            <p className="text-2xl font-bold text-orange-600">
-              ₩{transactionKPIs.aov.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500">Average Order Value</p>
-          </div>
+          <KPICard
+            title="Total Transactions"
+            value={transactionKPIs.totalTransactions.thisMonth}
+            subtitle="This month"
+            color="blue"
+          />
+          <KPICard
+            title="Web3 Adoption Rate"
+            value={`${transactionKPIs.web3AdoptionRate}%`}
+            subtitle={`vs Web2 ${100 - transactionKPIs.web3AdoptionRate}%`}
+            color="purple"
+          />
+          <KPICard
+            title="GMV"
+            value={`₩${(transactionKPIs.gmv / 1000000).toFixed(1)}M`}
+            subtitle="Gross Merchandise Volume"
+            color="green"
+          />
+          <KPICard
+            title="AOV"
+            value={`₩${transactionKPIs.aov.toLocaleString()}`}
+            subtitle="Average Order Value"
+            color="orange"
+          />
         </div>
       </div>
 
@@ -116,39 +106,28 @@ export function Overview() {
           Savings & Rewards KPIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Total Savings
-            </h4>
-            <p className="text-2xl font-bold text-green-600">
-              ₩{(savingsRewardsKPIs.totalSavings / 1000000).toFixed(1)}M
-            </p>
-            <p className="text-xs text-gray-500">Card fees saved via Web3</p>
-          </div>
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Rewards Distributed
-            </h4>
-            <p className="text-2xl font-bold text-blue-600">
-              ₩
-              {(savingsRewardsKPIs.totalRewardsDistributed / 1000000).toFixed(
-                1
-              )}
-              M
-            </p>
-            <p className="text-xs text-gray-500">Points, USDC, NFTs</p>
-          </div>
-          <div className="bg-purple-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Savings → Rewards Ratio
-            </h4>
-            <p className="text-2xl font-bold text-purple-600">
-              {savingsRewardsKPIs.savingsToRewardsRatio}%
-            </p>
-            <p className="text-xs text-gray-500">
-              Customer benefit return rate
-            </p>
-          </div>
+          <KPICard
+            title="Total Savings"
+            value={`₩${(savingsRewardsKPIs.totalSavings / 1000000).toFixed(
+              1
+            )}M`}
+            subtitle="Card fees saved via Web3"
+            color="green"
+          />
+          <KPICard
+            title="Rewards Distributed"
+            value={`₩${(
+              savingsRewardsKPIs.totalRewardsDistributed / 1000000
+            ).toFixed(1)}M`}
+            subtitle="Points, USDC, NFTs"
+            color="blue"
+          />
+          <KPICard
+            title="Savings → Rewards Ratio"
+            value={`${savingsRewardsKPIs.savingsToRewardsRatio}%`}
+            subtitle="Customer benefit return rate"
+            color="purple"
+          />
         </div>
       </div>
 
@@ -159,40 +138,30 @@ export function Overview() {
           Customer Retention KPIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-indigo-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Repeat Customer Rate
-            </h4>
-            <p className="text-2xl font-bold text-indigo-600">
-              {retentionKPIs.repeatCustomerRate}%
-            </p>
-            <p className="text-xs text-gray-500">This month buyers</p>
-          </div>
-          <div className="bg-amber-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">LTV</h4>
-            <p className="text-2xl font-bold text-amber-600">
-              ₩{retentionKPIs.ltv.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500">Lifetime Value</p>
-          </div>
-          <div className="bg-emerald-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Web3 Retention
-            </h4>
-            <p className="text-2xl font-bold text-emerald-600">
-              {retentionKPIs.web3RetentionRate}%
-            </p>
-            <p className="text-xs text-gray-500">Web3 customers</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Web2 Retention
-            </h4>
-            <p className="text-2xl font-bold text-gray-600">
-              {retentionKPIs.web2RetentionRate}%
-            </p>
-            <p className="text-xs text-gray-500">Web2 customers</p>
-          </div>
+          <KPICard
+            title="Repeat Customer Rate"
+            value={`${retentionKPIs.repeatCustomerRate}%`}
+            subtitle="This month buyers"
+            color="indigo"
+          />
+          <KPICard
+            title="LTV"
+            value={`₩${retentionKPIs.ltv.toLocaleString()}`}
+            subtitle="Lifetime Value"
+            color="amber"
+          />
+          <KPICard
+            title="Web3 Retention"
+            value={`${retentionKPIs.web3RetentionRate}%`}
+            subtitle="Web3 customers"
+            color="emerald"
+          />
+          <KPICard
+            title="Web2 Retention"
+            value={`${retentionKPIs.web2RetentionRate}%`}
+            subtitle="Web2 customers"
+            color="gray"
+          />
         </div>
 
         {/* Tier Distribution */}
@@ -201,24 +170,15 @@ export function Overview() {
             Membership Tier Distribution
           </h4>
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-amber-100 rounded-lg p-3 text-center">
-              <p className="text-lg font-bold text-amber-800">
-                {retentionKPIs.tierDistribution.bronze.toLocaleString()}
-              </p>
-              <p className="text-xs text-amber-700">Bronze</p>
-            </div>
-            <div className="bg-gray-100 rounded-lg p-3 text-center">
-              <p className="text-lg font-bold text-gray-800">
-                {retentionKPIs.tierDistribution.silver.toLocaleString()}
-              </p>
-              <p className="text-xs text-gray-700">Silver</p>
-            </div>
-            <div className="bg-yellow-100 rounded-lg p-3 text-center">
-              <p className="text-lg font-bold text-yellow-800">
-                {retentionKPIs.tierDistribution.gold.toLocaleString()}
-              </p>
-              <p className="text-xs text-yellow-700">Gold</p>
-            </div>
+            <TierCard
+              tier="bronze"
+              count={retentionKPIs.tierDistribution.bronze}
+            />
+            <TierCard
+              tier="silver"
+              count={retentionKPIs.tierDistribution.silver}
+            />
+            <TierCard tier="gold" count={retentionKPIs.tierDistribution.gold} />
           </div>
         </div>
       </div>
@@ -230,33 +190,24 @@ export function Overview() {
           Operational KPIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Active Campaigns
-            </h4>
-            <p className="text-2xl font-bold text-blue-600">
-              {operationalKPIs.activeCampaigns}
-            </p>
-            <p className="text-xs text-gray-500">Membership campaigns</p>
-          </div>
-          <div className="bg-red-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Reward Failure Rate
-            </h4>
-            <p className="text-2xl font-bold text-red-600">
-              {operationalKPIs.rewardFailureRate}%
-            </p>
-            <p className="text-xs text-gray-500">Failed reward distributions</p>
-          </div>
-          <div className="bg-orange-50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-600 mb-1">
-              Refund Rate
-            </h4>
-            <p className="text-2xl font-bold text-orange-600">
-              {operationalKPIs.refundRate}%
-            </p>
-            <p className="text-xs text-gray-500">Transaction refunds</p>
-          </div>
+          <KPICard
+            title="Active Campaigns"
+            value={operationalKPIs.activeCampaigns}
+            subtitle="Membership campaigns"
+            color="blue"
+          />
+          <KPICard
+            title="Reward Failure Rate"
+            value={`${operationalKPIs.rewardFailureRate}%`}
+            subtitle="Failed reward distributions"
+            color="red"
+          />
+          <KPICard
+            title="Refund Rate"
+            value={`${operationalKPIs.refundRate}%`}
+            subtitle="Transaction refunds"
+            color="orange"
+          />
         </div>
       </div>
 
@@ -267,42 +218,26 @@ export function Overview() {
           Recent Activity
         </h3>
         <div className="space-y-3">
-          <div className="flex items-center justify-between py-2 border-b border-gray-100">
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-              <span className="text-gray-700">
-                Web3 payment completed - ₩45,000
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">2 minutes ago</span>
-          </div>
-          <div className="flex items-center justify-between py-2 border-b border-gray-100">
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-              <span className="text-gray-700">
-                Rewards distributed - 1,250 USDC
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">5 minutes ago</span>
-          </div>
-          <div className="flex items-center justify-between py-2 border-b border-gray-100">
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
-              <span className="text-gray-700">
-                New Gold member - Customer #7890
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">10 minutes ago</span>
-          </div>
-          <div className="flex items-center justify-between py-2 border-b border-gray-100">
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-              <span className="text-gray-700">
-                Campaign launched - &quot;Web3 +2% Rewards&quot;
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">1 hour ago</span>
-          </div>
+          <ActivityItem
+            type="payment"
+            message="Web3 payment completed - ₩45,000"
+            timestamp="2 minutes ago"
+          />
+          <ActivityItem
+            type="reward"
+            message="Rewards distributed - 1,250 USDC"
+            timestamp="5 minutes ago"
+          />
+          <ActivityItem
+            type="membership"
+            message="New Gold member - Customer #7890"
+            timestamp="10 minutes ago"
+          />
+          <ActivityItem
+            type="campaign"
+            message='Campaign launched - "Web3 +2% Rewards"'
+            timestamp="1 hour ago"
+          />
         </div>
       </div>
     </div>

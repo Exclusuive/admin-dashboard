@@ -1,28 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-// Reward product type definition
-interface Reward {
-  id: string;
-  name: string;
-  type: "Digital" | "Physical" | "NFT";
-  requirement: {
-    type: "points" | "stamps" | "mixed";
-    points?: number;
-    stamps?: number;
-  };
-  status: "Active" | "Inactive";
-  stock?: {
-    total: number;
-    available: number;
-  };
-  period?: {
-    startDate: string;
-    endDate: string;
-  };
-  image?: string;
-}
+import { RewardCard, Reward, getRequirementText } from "./common/RewardCard";
+import { StatCard } from "./common/StatCard";
 
 // Sample data
 const sampleRewards: Reward[] = [
@@ -36,7 +16,8 @@ const sampleRewards: Reward[] = [
       startDate: "2024-01-01",
       endDate: "2024-12-31",
     },
-    image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&h=200&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&h=200&fit=crop",
   },
   {
     id: "2",
@@ -45,7 +26,8 @@ const sampleRewards: Reward[] = [
     requirement: { type: "mixed", points: 5000, stamps: 10 },
     status: "Active",
     stock: { total: 50, available: 23 },
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
   },
   {
     id: "3",
@@ -53,7 +35,8 @@ const sampleRewards: Reward[] = [
     type: "NFT",
     requirement: { type: "stamps", stamps: 20 },
     status: "Inactive",
-    image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=300&h=200&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=300&h=200&fit=crop",
   },
 ];
 
@@ -93,19 +76,6 @@ export function Rewards() {
     );
   };
 
-  const getRequirementText = (requirement: Reward["requirement"]) => {
-    switch (requirement.type) {
-      case "points":
-        return `Points ${requirement.points}`;
-      case "stamps":
-        return `Stamps ${requirement.stamps}`;
-      case "mixed":
-        return `Mixed (Points ${requirement.points} + Stamps ${requirement.stamps})`;
-      default:
-        return "";
-    }
-  };
-
   const deleteReward = (id: string) => {
     setRewards(rewards.filter((reward) => reward.id !== id));
   };
@@ -122,30 +92,24 @@ export function Rewards() {
 
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow p-4">
-          <h3 className="text-sm font-medium text-gray-500">Total Rewards</h3>
-          <p className="text-2xl font-bold text-blue-600">{rewards.length}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <h3 className="text-sm font-medium text-gray-500">Active Rewards</h3>
-          <p className="text-2xl font-bold text-green-600">
-            {rewards.filter((r) => r.status === "Active").length}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <h3 className="text-sm font-medium text-gray-500">
-            Inactive Rewards
-          </h3>
-          <p className="text-2xl font-bold text-gray-600">
-            {rewards.filter((r) => r.status === "Inactive").length}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <h3 className="text-sm font-medium text-gray-500">Low Stock</h3>
-          <p className="text-2xl font-bold text-red-600">
-            {rewards.filter((r) => r.stock && r.stock.available < 10).length}
-          </p>
-        </div>
+        <StatCard title="Total Rewards" value={rewards.length} color="blue" />
+        <StatCard
+          title="Active Rewards"
+          value={rewards.filter((r) => r.status === "Active").length}
+          color="green"
+        />
+        <StatCard
+          title="Inactive Rewards"
+          value={rewards.filter((r) => r.status === "Inactive").length}
+          color="default"
+        />
+        <StatCard
+          title="Low Stock"
+          value={
+            rewards.filter((r) => r.stock && r.stock.available < 10).length
+          }
+          color="red"
+        />
       </div>
 
       {/* Filters and Search */}
@@ -224,97 +188,13 @@ export function Rewards() {
       ) : viewMode === "card" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRewards.map((reward) => (
-            <div
+            <RewardCard
               key={reward.id}
-              className="bg-white rounded-lg shadow overflow-hidden"
-            >
-              {/* Image Section */}
-              {reward.image && (
-                <div className="h-48 bg-gray-200 overflow-hidden">
-                  <img
-                    src={reward.image}
-                    alt={reward.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600">
-                    {reward.name}
-                  </h3>
-                  <span
-                    className={`px-2 py-1 text-xs rounded-full ${
-                      reward.type === "Digital"
-                        ? "bg-blue-100 text-blue-800"
-                        : reward.type === "Physical"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-purple-100 text-purple-800"
-                    }`}
-                  >
-                    {reward.type}
-                  </span>
-                </div>
-
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>
-                    <span className="font-medium">Requirement:</span>{" "}
-                    {getRequirementText(reward.requirement)}
-                  </div>
-
-                  {reward.stock && (
-                    <div>
-                      <span className="font-medium">Stock:</span>{" "}
-                      {reward.stock.available}/{reward.stock.total}
-                    </div>
-                  )}
-
-                  {reward.period && (
-                    <div>
-                      <span className="font-medium">Period:</span>{" "}
-                      {reward.period.startDate} ~ {reward.period.endDate}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center">
-                    <span className="text-sm text-gray-600 mr-2">Status:</span>
-                    <button
-                      onClick={() => toggleRewardStatus(reward.id)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        reward.status === "Active"
-                          ? "bg-blue-600"
-                          : "bg-gray-200"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          reward.status === "Active"
-                            ? "translate-x-6"
-                            : "translate-x-1"
-                        }`}
-                      />
-                    </button>
-                    <span className="ml-2 text-sm text-gray-600">
-                      {reward.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex space-x-2">
-                  <button className="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700 transition-colors">
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteReward(reward.id)}
-                    className="flex-1 bg-red-600 text-white py-2 px-3 rounded text-sm hover:bg-red-700 transition-colors"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
+              reward={reward}
+              onToggleStatus={toggleRewardStatus}
+              onEdit={() => alert(`Edit ${reward.name}`)}
+              onDelete={deleteReward}
+            />
           ))}
         </div>
       ) : (

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { StatCard } from "./common/StatCard";
+import { MembershipCard } from "./common/MembershipCard";
 
 // Mock data
 const membershipTypes = [
@@ -187,32 +189,26 @@ export function Memberships() {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">Total Members</h3>
-            <p className="text-2xl font-bold text-blue-600">
-              {selectedMembership.totalMembers}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">Active</h3>
-            <p className="text-2xl font-bold text-green-600">
-              {selectedMembership.activeMembers}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">New (30 days)</h3>
-            <p className="text-2xl font-bold text-purple-600">
-              +{Math.floor(Math.random() * 50) + 10}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="text-sm font-medium text-gray-500">
-              Recent Activity
-            </h3>
-            <p className="text-2xl font-bold text-orange-600">
-              {Math.floor(Math.random() * 20) + 5}
-            </p>
-          </div>
+          <StatCard
+            title="Total Members"
+            value={selectedMembership.totalMembers}
+            color="blue"
+          />
+          <StatCard
+            title="Active"
+            value={selectedMembership.activeMembers}
+            color="green"
+          />
+          <StatCard
+            title="New (30 days)"
+            value={`+${Math.floor(Math.random() * 50) + 10}`}
+            color="purple"
+          />
+          <StatCard
+            title="Recent Activity"
+            value={Math.floor(Math.random() * 20) + 5}
+            color="orange"
+          />
         </div>
 
         {/* Tabs */}
@@ -667,65 +663,14 @@ export function Memberships() {
       {/* Memberships Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {memberships.map((membership) => (
-          <div key={membership.id} className="bg-white rounded-lg shadow p-6">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {membership.name}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {membership.description}
-                </p>
-                <span className="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                  {membership.type}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Total Members:</span>
-                <span className="font-medium">
-                  {membership.totalMembers.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Active:</span>
-                <span className="font-medium text-green-600">
-                  {membership.activeMembers.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Inactive:</span>
-                <span className="font-medium text-red-600">
-                  {membership.inactiveMembers.toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="text-xs text-gray-400 mb-4">
-              <div>Created: {membership.createdAt}</div>
-              <div>Updated: {membership.updatedAt}</div>
-            </div>
-
-            <div className="flex space-x-2">
-              <button
-                onClick={() => handleViewMembership(membership)}
-                className="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700 transition-colors"
-              >
-                View
-              </button>
-              <button className="flex-1 bg-green-600 text-white py-2 px-3 rounded text-sm hover:bg-green-700 transition-colors">
-                Add Member
-              </button>
-              <button className="flex-1 bg-gray-600 text-white py-2 px-3 rounded text-sm hover:bg-gray-700 transition-colors">
-                Edit
-              </button>
-              <button className="flex-1 bg-red-600 text-white py-2 px-3 rounded text-sm hover:bg-red-700 transition-colors">
-                Delete
-              </button>
-            </div>
-          </div>
+          <MembershipCard
+            key={membership.id}
+            membership={membership}
+            onView={handleViewMembership}
+            onAddMember={() => alert(`Add member to ${membership.name}`)}
+            onEdit={() => alert(`Edit ${membership.name}`)}
+            onDelete={() => alert(`Delete ${membership.name}`)}
+          />
         ))}
       </div>
     </div>
