@@ -26,10 +26,10 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useCreateShop } from "@/hooks/useCreateShop";
 
 const defaultShopList = [
   {
-    name: "Shop 1",
     id: "0x1234567890",
     capId: "0x1234567890",
   },
@@ -41,6 +41,7 @@ export default function Dashboard() {
   const account = useCurrentAccount();
   const [shops, setShops] = useState(defaultShopList);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const { createShop } = useCreateShop();
 
   const handleClick = (shopId: string, shopCapId: string) => {
     setShopId(shopId);
@@ -49,12 +50,9 @@ export default function Dashboard() {
 
   const handleAddShop = (name: string) => {
     if (!name.trim()) return;
-    const newShop = {
-      name: name.trim(),
-      id: crypto?.randomUUID?.() ?? `shop_${Date.now()}`,
-      capId: "",
-    };
-    setShops((prev) => [...prev, newShop]);
+    createShop((result) => {
+      setShops((prev) => [...prev, result]);
+    });
     setIsAddOpen(false);
   };
 
@@ -90,7 +88,6 @@ export default function Dashboard() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Shop Name</TableHead>
                 <TableHead>Shop ID</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
@@ -98,7 +95,6 @@ export default function Dashboard() {
             <TableBody>
               {shops.map((shop) => (
                 <TableRow key={shop.id}>
-                  <TableCell className="font-mono">{shop.name}</TableCell>
                   <TableCell className="font-mono">{shop.id}</TableCell>
                   <TableCell className="text-right">
                     <button
