@@ -1,4 +1,8 @@
-import { KPICard, TierCard, ActivityItem } from "./common/KPICard";
+import {
+  KPICard,
+  TierCard,
+  ActivityItem,
+} from "../../components/common/KPICard";
 
 export function Overview() {
   // Mock data for Web3 payment and membership metrics

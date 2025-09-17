@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MembershipCard } from "../../../components/common/MembershipCard";
+import { MembershipCard } from "../../components/common/MembershipCard";
 import { useState } from "react";
 
 const memberships = [

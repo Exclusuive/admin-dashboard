@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { StatCard } from "./common/StatCard";
+import { StatCard } from "../../components/common/StatCard";
 
 interface WebhookEvent {
   id: string;

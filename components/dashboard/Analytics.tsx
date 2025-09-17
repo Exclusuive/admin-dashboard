@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { KPICard } from "./common/KPICard";
+import { KPICard } from "../../components/common/KPICard";
 
 export function Analytics() {
   const [selectedPeriod, setSelectedPeriod] = useState("month");

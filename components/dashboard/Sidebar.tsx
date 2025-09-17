@@ -1,7 +1,8 @@
 "use client";
 
-import { useDashboard } from "../providers/DashboardProvider";
+import { useDashboard } from "../../app/dashboard/providers/DashboardProvider";
 import Link from "next/link";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -18,7 +19,8 @@ const menuItems = [
 ];
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
-  const { activeTab, setActiveTab, user } = useDashboard();
+  const { activeTab, setActiveTab } = useDashboard();
+  const account = useCurrentAccount();
 
   return (
     <>
@@ -86,16 +88,23 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         </div>
 
         {/* User Info */}
+
         <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-              {user.name.charAt(0)}
+          {account?.address ? (
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                A
+              </div>
+              <div>
+                <p className="font-medium text-gray-800">
+                  {account?.address.slice(0, 10)}...
+                </p>
+                <p className="text-sm text-gray-500">Admin</p>
+              </div>
             </div>
-            <div>
-              <p className="font-medium text-gray-800">{user.name}</p>
-              <p className="text-sm text-gray-500">{user.role}</p>
-            </div>
-          </div>
+          ) : (
+            <div>Please Connect Wallet.</div>
+          )}
         </div>
 
         {/* Navigation */}

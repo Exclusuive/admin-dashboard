@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { RewardCard, Reward, getRequirementText } from "./common/RewardCard";
-import { StatCard } from "./common/StatCard";
+import {
+  RewardCard,
+  Reward,
+  getRequirementText,
+} from "../../components/common/RewardCard";
+import { StatCard } from "../../components/common/StatCard";
 
 // Sample data
 const sampleRewards: Reward[] = [

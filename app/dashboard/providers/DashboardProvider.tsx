@@ -4,12 +4,12 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 interface DashboardContextType {
   activeTab: string;
+  shopId: string;
+  shopCapId: string;
   setActiveTab: (tab: string) => void;
-  user: {
-    name: string;
-    email: string;
-    role: string;
-  };
+  setShopId: (id: string) => void;
+  setShopCapId: (id: string) => void;
+
   stats: {
     totalUsers: number;
     totalOrders: number;
@@ -23,17 +23,13 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState("overview");
-
-  const user = {
-    name: "Admin",
-    email: "admin@example.com",
-    role: "Administrator",
-  };
+  const [shopId, setShopId] = useState("");
+  const [shopCapId, setShopCapId] = useState("");
 
   const stats = {
-    totalUsers: 1234,
-    totalOrders: 567,
-    revenue: 12345678,
+    totalUsers: 0,
+    totalOrders: 0,
+    revenue: 0,
   };
 
   return (
@@ -41,7 +37,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       value={{
         activeTab,
         setActiveTab,
-        user,
+        shopId,
+        shopCapId,
+        setShopId,
+        setShopCapId,
         stats,
       }}
     >
