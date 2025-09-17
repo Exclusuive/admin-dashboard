@@ -25,23 +25,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import { useState } from "react";
-import { useCreateShop } from "@/hooks/useCreateShop";
-
-const defaultShopList = [
-  {
-    id: "0x1234567890",
-    capId: "0x1234567890",
-  },
-];
+import { useState, useEffect } from "react";
+import { useCreateShop } from "@/hooks/moveCall/useCreateShop";
+import { RetailShop } from "@/lib/types";
+import { useGetShops } from "@/hooks/getData/useGetShops";
 
 export default function Dashboard() {
   const { activeTab, shopId, shopCapId, setShopId, setShopCapId } =
     useDashboard();
   const account = useCurrentAccount();
-  const [shops, setShops] = useState(defaultShopList);
+  const [shops, setShops] = useState<RetailShop[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const { createShop } = useCreateShop();
+  const { shops: tempShops } = useGetShops({
+    owner: account?.address,
+  });
+
+  useEffect(() => {
+    setShops(tempShops ?? []);
+  }, [tempShops]);
 
   const handleClick = (shopId: string, shopCapId: string) => {
     setShopId(shopId);
