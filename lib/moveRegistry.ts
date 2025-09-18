@@ -27,7 +27,7 @@ export const SHOP_MODULE_STRUCTS = Object.fromEntries(
 const SHOP_MODULE_FUNCTION_NAMES = {
   // Entry
   createShop: "create_shop",
-
+  createMembershipType: "add_retail_membership_type",
   // New
   newShop: "new_shop",
 } as const;

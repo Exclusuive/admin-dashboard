@@ -16,13 +16,15 @@ import { RetailMembershipType } from "@/lib/types";
 import { useGetMembershipTypes } from "@/hooks/getData/useGetMembershipTypes";
 import { useDashboard } from "../providers/DashboardProvider";
 import { Plus } from "lucide-react";
+import { useCreateMembershipType } from "@/hooks/moveCall/useCreateMembershipType";
 
 export default function MembershipsPage() {
   const router = useRouter();
   const [isCreateMembershipModalOpen, setIsCreateMembershipModalOpen] =
     useState(false);
   const [memberships, setMemberships] = useState<RetailMembershipType[]>([]);
-  const { shopId } = useDashboard();
+  const { shopId, shopCapId } = useDashboard();
+  const { createMembershipType } = useCreateMembershipType();
 
   const { membershipTypes } = useGetMembershipTypes({ id: shopId });
 
@@ -39,10 +41,12 @@ export default function MembershipsPage() {
     requiredAmountToUpgrade: number
   ) => {
     if (!name.trim() || requiredAmountToUpgrade === 0) return;
-    // createMembership((result: RetailMembership) => {
-    //   setMemberships((prev) => [...prev, result]);
-    // });
-    setMemberships((prev) => [...prev, { name, requiredAmountToUpgrade }]);
+    createMembershipType(
+      { name, requiredAmountToUpgrade, shopId, shopCapId },
+      (result: RetailMembershipType) => {
+        setMemberships((prev) => [...prev, result]);
+      }
+    );
     setIsCreateMembershipModalOpen(false);
   };
 
