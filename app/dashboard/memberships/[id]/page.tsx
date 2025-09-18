@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { StatCard } from "../../../../components/common/StatCard";
 import {
@@ -12,6 +12,8 @@ import {
 import { MembersTab } from "../../../../components/memberships/MembersTab";
 import { SettingsTab } from "../../../../components/memberships/SettingsTab";
 import { ActivityTab } from "../../../../components/memberships/ActivityTab";
+import { useAddMember } from "@/hooks/moveCall/useAddMember";
+import { RetailMembership } from "@/lib/types";
 
 // 임시: 목록 페이지의 mock 데이터와 동일 구조
 const memberships = [
@@ -47,7 +49,7 @@ const memberships = [
   },
 ];
 
-const members = [
+const defaultMembers = [
   {
     name: "Alice Johnson",
     id: "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6",
@@ -59,15 +61,14 @@ const members = [
   {
     name: "Bob Smith",
     id: "0x8ba1f109551bD432803012645Hac136c",
-    status: "Active",
+    status: "Inactive",
     joinDate: "2024-01-10",
     lastActivity: "2024-01-19",
     email: "bob@example.com",
   },
   {
-    name: "Carol Davis",
     id: "0x1234567890abcdef1234567890abcdef12345678",
-    status: "Inactive",
+    status: "Active",
     joinDate: "2024-01-05",
     lastActivity: "2024-01-12",
     email: "carol@example.com",
@@ -102,6 +103,7 @@ export default function MembershipDetailPage() {
   const router = useRouter();
   const params = useParams();
   const membershipId = useMemo(() => String(params?.id), [params]);
+  const [members, setMembers] = useState<RetailMembership[]>(defaultMembers);
   const membership = useMemo(
     () => memberships.find((m) => m.name === membershipId),
     [membershipId]
@@ -197,6 +199,7 @@ export default function MembershipDetailPage() {
               <MembersTab
                 members={members}
                 onMemberAction={handleMemberAction}
+                setMembers={setMembers}
               />
             </TabsContent>
 

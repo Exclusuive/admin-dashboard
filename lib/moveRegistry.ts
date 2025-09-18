@@ -5,6 +5,7 @@ export const UPGRADED_PACKAGE_ID =
 
 export const MODULE = {
   RETAIL_SHOP: "retail_shop",
+  STAMP_REWARD: "stamp_reward",
 } as const;
 
 // =====================================
@@ -50,3 +51,37 @@ export const SHOP_EVENTS = Object.fromEntries(
     `${UPGRADED_PACKAGE_ID}::${MODULE.RETAIL_SHOP}::${event}`,
   ])
 ) as Record<keyof typeof SHOP_EVENT_NAMES, string>;
+
+const STAMP_REWARD_MODULE_STRUCT_NAMES = {
+  StampCard: "StampCard",
+} as const;
+
+export const STAMP_REWARD_MODULE_STRUCTS = Object.fromEntries(
+  Object.entries(STAMP_REWARD_MODULE_STRUCT_NAMES).map(([key, struct]) => [
+    key,
+    `${ORIGIN_PACKAGE_ID}::${MODULE.STAMP_REWARD}::${struct}`,
+  ])
+) as Record<keyof typeof STAMP_REWARD_MODULE_STRUCT_NAMES, string>;
+
+const STAMP_REWARD_MODULE_FUNCTION_NAMES = {
+  // New
+  newStampCard: "new_stamp_card",
+} as const;
+
+export const STAMP_REWARD_MODULE_FUNCTIONS = Object.fromEntries(
+  Object.entries(STAMP_REWARD_MODULE_FUNCTION_NAMES).map(([key, func]) => [
+    key,
+    `${UPGRADED_PACKAGE_ID}::${MODULE.STAMP_REWARD}::${func}`,
+  ])
+) as Record<keyof typeof STAMP_REWARD_MODULE_FUNCTION_NAMES, string>;
+
+export const STAMP_REWARD_EVENT_NAMES = {
+  StampCardCreated: "StampCardCreated",
+} as const;
+
+export const STAMP_REWARD_EVENTS = Object.fromEntries(
+  Object.entries(STAMP_REWARD_EVENT_NAMES).map(([key, event]) => [
+    key,
+    `${UPGRADED_PACKAGE_ID}::${MODULE.STAMP_REWARD}::${event}`,
+  ])
+) as Record<keyof typeof STAMP_REWARD_EVENT_NAMES, string>;

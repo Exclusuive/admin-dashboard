@@ -1,23 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { RetailMembership } from "@/lib/types";
+import { AddMemberDialog } from "./AddMemberDialog";
+import { useAddMember } from "@/hooks/moveCall/useAddMember";
+import { useDashboard } from "@/app/dashboard/providers/DashboardProvider";
 
 interface MembersTabProps {
   members: RetailMembership[];
   onMemberAction: (memberId: string, action: string) => void;
+  setMembers: (members: RetailMembership[]) => void;
 }
 
-export function MembersTab({ members, onMemberAction }: MembersTabProps) {
-  const [showAddMember, setShowAddMember] = useState(false);
-  const [newMemberIdentifier, setNewMemberIdentifier] = useState("");
+export function MembersTab({
+  members,
+  onMemberAction,
+  setMembers,
+}: MembersTabProps) {
+  const { addMember } = useAddMember();
+  const { shopId } = useDashboard();
 
-  const handleAddMember = () => {
-    if (newMemberIdentifier.trim()) {
-      alert(`Member added: ${newMemberIdentifier}`);
-      setNewMemberIdentifier("");
-      setShowAddMember(false);
-    }
+  const handleAddMember = (address: string) => {
+    // addMember(
+    //   { shopId: shopId, recipient: address },
+    //   (result: RetailMembership) => {
+    //     setMembers((prev) => [...prev, result]);
+    //   }
+    // );
   };
 
   return (
@@ -36,43 +44,8 @@ export function MembersTab({ members, onMemberAction }: MembersTabProps) {
             <option>Inactive</option>
           </select>
         </div>
-        <button
-          onClick={() => setShowAddMember(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Add Member
-        </button>
+        <AddMemberDialog onAddMember={handleAddMember} />
       </div>
-
-      {/* Add Member Modal */}
-      {showAddMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold mb-4">Add New Member</h3>
-            <input
-              type="text"
-              placeholder="Wallet Address (0x...)"
-              value={newMemberIdentifier}
-              onChange={(e) => setNewMemberIdentifier(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4"
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setShowAddMember(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddMember}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Add Member
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Members Table */}
       <div className="overflow-x-auto">
@@ -106,19 +79,21 @@ export function MembersTab({ members, onMemberAction }: MembersTabProps) {
                   {member.id.slice(0, 6)}...{member.id.slice(-6)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                      {member.name?.charAt(0)}
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {member.name}
+                  {member.name && (
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                        {member.name?.charAt(0)}
                       </div>
-                      <div className="text-sm text-gray-500">
-                        {member.email}
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {member.name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {member.email}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
