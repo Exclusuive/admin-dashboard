@@ -88,7 +88,9 @@ export default function RewardsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Reward Management</h2>
+        <h2 className="text-2xl font-bold text-gray-900">
+          Reward Management (Example)
+        </h2>
         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
           Create Reward
         </button>

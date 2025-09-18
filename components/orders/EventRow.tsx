@@ -11,15 +11,20 @@ import { WebhookEvent } from "../../lib/types";
 export default function EventRow({
   event,
   openMembershipModal,
-  deleteEvent,
 }: {
   event: WebhookEvent;
   openMembershipModal: (event: WebhookEvent) => void;
-  deleteEvent: (id: string) => void;
 }) {
   const amount = getPaymentAmount(event);
   const paymentMethod = getPaymentMethod(event);
   const membershipStatus = getMembershipStatus(event);
+  const displayMembershipStatus = event.membershipApplied
+    ? "Stamp Granted"
+    : membershipStatus === "적립하기"
+    ? "Grant Stamp"
+    : membershipStatus === "구독 관리"
+    ? "Manage Subscription"
+    : membershipStatus ?? "";
 
   return (
     <tr className="hover:bg-gray-50">
@@ -82,7 +87,7 @@ export default function EventRow({
               : "bg-red-100 text-red-800"
           }`}
         >
-          {event.processed ? "처리됨" : "오류"}
+          {event.processed ? "Processed" : "Error"}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -102,19 +107,11 @@ export default function EventRow({
                 : "bg-green-100 text-green-800"
             }`}
           >
-            {event.membershipApplied ? "적립 완료" : membershipStatus}
+            {displayMembershipStatus}
           </button>
         ) : (
           <span className="text-gray-400 text-xs">-</span>
         )}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <button
-          onClick={() => deleteEvent(event.id)}
-          className="text-red-600 hover:text-red-900"
-        >
-          삭제
-        </button>
       </td>
     </tr>
   );

@@ -11,7 +11,7 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">
-          Analytics Dashboard
+          Analytics Dashboard (Example)
         </h2>
         <div className="flex space-x-2">
           {["day", "week", "month"].map((period) => (
@@ -24,7 +24,7 @@ export default function AnalyticsPage() {
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              {period === "day" ? "일" : period === "week" ? "주" : "월"}
+              {period === "day" ? "Day" : period === "week" ? "Week" : "Month"}
             </button>
           ))}
         </div>
@@ -33,30 +33,30 @@ export default function AnalyticsPage() {
       {/* 핵심 KPI 하이라이트 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
-          title="Web3 결제 비중"
+          title="Web3 Payment Share"
           value="35%"
           subtitle="+12% MoM"
           color="blue"
           size="lg"
         />
         <KPICard
-          title="Web3 재구매율"
+          title="Web3 Repeat Purchase Rate"
           value="28%"
           subtitle="vs Web2 15%"
           color="purple"
           size="lg"
         />
         <KPICard
-          title="리워드 활용률"
+          title="Reward Utilization Rate"
           value="72%"
           subtitle="+5% MoM"
           color="orange"
           size="lg"
         />
         <KPICard
-          title="활성 멤버"
+          title="Active Members"
           value="12,340"
-          subtitle="명"
+          subtitle="members"
           color="indigo"
           size="lg"
         />
@@ -65,23 +65,23 @@ export default function AnalyticsPage() {
       {/* 매출/거래 지표 */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          매출/거래 지표
+          Sales/Transaction Metrics
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <KPICard
-            title="총 결제 건수"
+            title="Total Transactions"
             value="8,456"
             color="blue"
             trend={{ value: "+15.3%", isPositive: true }}
           />
           <KPICard
-            title="총 결제 금액"
+            title="Total Payment Amount"
             value="₩127.8M"
             color="green"
             trend={{ value: "+22.1%", isPositive: true }}
           />
           <KPICard
-            title="평균 결제 금액"
+            title="Average Payment Amount"
             value="₩15,120"
             color="purple"
             trend={{ value: "+5.8%", isPositive: true }}
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
         {/* 결제 수단 비율 */}
         <div className="mt-6">
           <h4 className="text-md font-medium text-gray-700 mb-4">
-            결제 수단 비율
+            Payment Method Ratio
           </h4>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -122,15 +122,17 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            리워드 지표
+            Reward Metrics
           </h3>
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">총 적립 포인트</span>
+              <span className="text-sm text-gray-600">Total Earned Points</span>
               <span className="font-semibold">2,456,780 P</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">총 사용 포인트</span>
+              <span className="text-sm text-gray-600">
+                Total Redeemed Points
+              </span>
               <span className="font-semibold">1,768,890 P</span>
             </div>
             <div className="flex justify-between items-center">
@@ -141,7 +143,7 @@ export default function AnalyticsPage() {
             </div>
             <div className="mt-4">
               <div className="flex justify-between text-sm mb-1">
-                <span>사용됨</span>
+                <span>Used</span>
                 <span>72%</span>
               </div>
               <div className="bg-gray-200 rounded-full h-2">
@@ -156,7 +158,7 @@ export default function AnalyticsPage() {
 
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            멤버십 티어 분포
+            Membership Tier Distribution
           </h3>
           <div className="space-y-3">
             {[
@@ -188,7 +190,7 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-500">
-                    {item.count.toLocaleString()}명
+                    {item.count.toLocaleString()} members
                   </span>
                   <span className="text-sm font-medium">
                     {item.percentage}%
@@ -203,29 +205,29 @@ export default function AnalyticsPage() {
       {/* 고객 리텐션/행동 지표 */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          고객 리텐션/행동 지표
+          Customer Retention/Behavior Metrics
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <KPICard
-            title="재구매율"
+            title="Repeat Purchase Rate"
             value="23.5%"
             color="blue"
             trend={{ value: "+3.2%", isPositive: true }}
           />
           <KPICard
-            title="Web3 재방문율"
+            title="Web3 Return Rate"
             value="28%"
             subtitle="vs Web2 15%"
             color="green"
           />
           <KPICard
-            title="평균 LTV"
+            title="Average LTV"
             value="₩89,500"
             color="purple"
             trend={{ value: "+12.8%", isPositive: true }}
           />
           <KPICard
-            title="신규 전환율"
+            title="New Conversion Rate"
             value="67%"
             color="orange"
             trend={{ value: "+8.5%", isPositive: true }}
@@ -236,22 +238,22 @@ export default function AnalyticsPage() {
       {/* Actionable Insights */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          전략 인사이트
+          Strategic Insights
         </h3>
         <div className="space-y-4">
           <div className="border-l-4 border-blue-500 bg-blue-50 p-4 rounded-r-lg">
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <h4 className="font-semibold text-blue-900 mb-2">
-                  Web3 전환 기회
+                  Web3 Conversion Opportunity
                 </h4>
                 <p className="text-blue-800 text-sm">
-                  Web3 결제 고객의 재방문율이 Web2보다 1.8배 높습니다. Web2 고객
-                  대상 Web3 전환 보너스 캠페인을 실행하세요.
+                  Web3 payment customers return 1.8x more than Web2. Run a Web3
+                  conversion bonus campaign targeting Web2 customers.
                 </p>
               </div>
               <button className="ml-4 bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
-                캠페인 생성
+                Create Campaign
               </button>
             </div>
           </div>
@@ -260,15 +262,15 @@ export default function AnalyticsPage() {
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <h4 className="font-semibold text-orange-900 mb-2">
-                  리워드 활용 증대
+                  Increase Reward Utilization
                 </h4>
                 <p className="text-orange-800 text-sm">
-                  30일 내 적립된 포인트 중 35%가 아직 미사용 상태입니다. 소멸 전
-                  리마인드 알림을 발송하세요.
+                  35% of points earned in the last 30 days remain unused. Send a
+                  reminder before expiration.
                 </p>
               </div>
               <button className="ml-4 bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700">
-                알림 발송
+                Send Notification
               </button>
             </div>
           </div>
@@ -277,15 +279,15 @@ export default function AnalyticsPage() {
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <h4 className="font-semibold text-green-900 mb-2">
-                  주문금액 증대
+                  Increase Order Value
                 </h4>
                 <p className="text-green-800 text-sm">
-                  평균 주문금액 ₩15,120 → 1만 원 이상 주문 시 스탬프 2배 지급
-                  프로모션 추천
+                  Average order value ₩15,120 → Recommend a promotion: double
+                  stamps for orders over ₩10,000.
                 </p>
               </div>
               <button className="ml-4 bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700">
-                프로모션 생성
+                Create Promotion
               </button>
             </div>
           </div>
@@ -295,12 +297,12 @@ export default function AnalyticsPage() {
       {/* 상품/마켓 지표 */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          상품/마켓 지표
+          Product/Market Metrics
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <h4 className="text-md font-medium text-gray-700 mb-4">
-              인기 교환 상품 TOP 5
+              Top 5 Redeemed Items
             </h4>
             <div className="space-y-3">
               {[
@@ -314,7 +316,9 @@ export default function AnalyticsPage() {
                   <div className="flex-1">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-700">{item.name}</span>
-                      <span className="text-gray-500">{item.exchanges}회</span>
+                      <span className="text-gray-500">
+                        {item.exchanges} times
+                      </span>
                     </div>
                     <div className="mt-1 bg-gray-200 rounded-full h-2">
                       <div
@@ -330,20 +334,26 @@ export default function AnalyticsPage() {
 
           <div>
             <h4 className="text-md font-medium text-gray-700 mb-4">
-              교환 전환율
+              Redemption Conversion
             </h4>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">조회 → 교환 완료</span>
+                <span className="text-sm text-gray-600">
+                  Views → Redemptions
+                </span>
                 <span className="font-semibold text-green-600">12.3%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">재고 소진 속도</span>
-                <span className="font-semibold text-blue-600">평균 3.2일</span>
+                <span className="text-sm text-gray-600">
+                  Inventory Depletion Speed
+                </span>
+                <span className="font-semibold text-blue-600">
+                  Avg. 3.2 days
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">품절 알림 대상</span>
-                <span className="font-semibold text-orange-600">23개 상품</span>
+                <span className="text-sm text-gray-600">Low-stock Alerts</span>
+                <span className="font-semibold text-orange-600">23 items</span>
               </div>
             </div>
           </div>
@@ -353,35 +363,35 @@ export default function AnalyticsPage() {
       {/* 세그먼트 분석 */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          세그먼트 분석
+          Segment Analysis
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <KPICard
             title="High Spenders"
             value="1,234"
-            subtitle="상위 10%"
-            description="매출 기여도 45%"
+            subtitle="Top 10%"
+            description="45% of revenue"
             color="blue"
           />
           <KPICard
             title="Dormant Users"
             value="3,456"
-            subtitle="30일+ 미방문"
-            description="재활성화 대상"
+            subtitle="No visit in 30+ days"
+            description="Reactivation target"
             color="red"
           />
           <KPICard
             title="Web3 Shifters"
             value="2,890"
             subtitle="Web2→Web3"
-            description="전환율 23%"
+            description="Conversion rate 23%"
             color="green"
           />
           <KPICard
-            title="신규 가입자"
+            title="New Signups"
             value="567"
-            subtitle="이번 주"
-            description="전환율 67%"
+            subtitle="This week"
+            description="Conversion rate 67%"
             color="purple"
           />
         </div>

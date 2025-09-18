@@ -28,7 +28,7 @@ export default function MembershipModal({
 
   const applyMembership = async () => {
     if (!selectedEvent || !barcodeInput.trim()) {
-      alert("바코드혹은 NFC를 스캔해주세요.");
+      alert("Please scan a barcode or NFC.");
       return;
     }
     try {
@@ -42,8 +42,8 @@ export default function MembershipModal({
       setBarcodeInput("");
       onClose();
     } catch (error) {
-      console.error("멤버십 적립 오류:", error);
-      alert("멤버십 적립 중 오류가 발생했습니다.");
+      console.error("Membership grant error:", error);
+      alert("An error occurred while granting membership.");
     }
   };
 
@@ -52,7 +52,7 @@ export default function MembershipModal({
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900">
-            NFC 혹은 바코드로 멤버십을 인식해주세요
+            Please identify membership via NFC or Barcode
           </h3>
         </div>
 
@@ -83,11 +83,11 @@ export default function MembershipModal({
 
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="text-sm font-medium text-gray-700 mb-2">
-              결제 정보
+              Payment Details
             </h4>
             <div className="space-y-1 text-sm text-gray-600">
               <div>
-                금액:{" "}
+                Amount:{" "}
                 {(() => {
                   const amount = getPaymentAmount(selectedEvent);
                   return amount.currency === "KRW"
@@ -95,8 +95,8 @@ export default function MembershipModal({
                     : `${amount.value} ${amount.currency}`;
                 })()}
               </div>
-              <div>결제 수단: {getPaymentMethod(selectedEvent)}</div>
-              <div>결제 시간: {formatDate(selectedEvent.created)}</div>
+              <div>Payment Method: {getPaymentMethod(selectedEvent)}</div>
+              <div>Payment Time: {formatDate(selectedEvent.created)}</div>
             </div>
           </div>
         </div>
@@ -106,13 +106,13 @@ export default function MembershipModal({
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
-            취소
+            Cancel
           </button>
           <button
             onClick={applyMembership}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            적용하기
+            Apply
           </button>
         </div>
       </div>
