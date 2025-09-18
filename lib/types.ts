@@ -1,6 +1,6 @@
 export interface RetailShop {
   id: string;
-  name?: string;
+  name: string;
   capId: string;
 }
 
@@ -16,4 +16,20 @@ export interface RetailMembership {
   status: string;
   joinDate: string;
   lastActivity: string;
+}
+
+export interface WebhookEvent {
+  id: string;
+  type: string;
+  created: string;
+  data: Record<string, unknown>;
+  processed: boolean;
+  error?: string;
+  membershipApplied: boolean;
+}
+
+export interface EventStats {
+  total: number;
+  byType: Record<string, number>;
+  last24Hours: number;
 }

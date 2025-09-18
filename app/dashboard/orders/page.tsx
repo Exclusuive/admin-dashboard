@@ -3,26 +3,8 @@
 import { useState, useEffect } from "react";
 import { StatCard } from "../../../components/common/StatCard";
 import EventRow from "../../../components/orders/EventRow";
-import {
-  getPaymentAmount,
-  getPaymentMethod,
-  formatDate,
-} from "../../../lib/webhooks";
-
-interface WebhookEvent {
-  id: string;
-  type: string;
-  created: string;
-  data: Record<string, unknown>;
-  processed: boolean;
-  error?: string;
-}
-
-interface EventStats {
-  total: number;
-  byType: Record<string, number>;
-  last24Hours: number;
-}
+import MembershipModal from "../../../components/orders/MembershipModal";
+import { WebhookEvent, EventStats } from "../../../lib/types";
 
 export default function OrdersPage() {
   const [events, setEvents] = useState<WebhookEvent[]>([]);
@@ -33,7 +15,6 @@ export default function OrdersPage() {
   >("disconnected");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<WebhookEvent | null>(null);
-  const [barcodeInput, setBarcodeInput] = useState("");
 
   // 데이터 로드 + 자동 새로고침
   useEffect(() => {
@@ -117,34 +98,15 @@ export default function OrdersPage() {
   const openMembershipModal = (event: WebhookEvent) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
-    setBarcodeInput("");
   };
 
   // 모달 닫기
   const closeMembershipModal = () => {
     setIsModalOpen(false);
     setSelectedEvent(null);
-    setBarcodeInput("");
   };
 
-  // 멤버십 적용하기
-  const applyMembership = async () => {
-    if (!selectedEvent || !barcodeInput.trim()) {
-      alert("바코드를 입력해주세요.");
-      return;
-    }
-    try {
-      console.log("멤버십 적립:", {
-        eventId: selectedEvent.id,
-        barcode: barcodeInput,
-      });
-      alert("멤버십이 성공적으로 적립되었습니다!");
-      closeMembershipModal();
-    } catch (error) {
-      console.error("멤버십 적립 오류:", error);
-      alert("멤버십 적립 중 오류가 발생했습니다.");
-    }
-  };
+  // 멤버십 적용 로직은 MembershipModal 내부로 이동
 
   const loadEvents = async () => {
     const eventsUrl = "/api/webhooks/events?limit=100";
@@ -276,80 +238,12 @@ export default function OrdersPage() {
         )}
       </div>
 
-      {/* 멤버십 적립 모달 */}
-      {isModalOpen && selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            {/* 모달 헤더 */}
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">
-                NFC 혹은 바코드로 멤버십을 인식해주세요
-              </h3>
-            </div>
-
-            {/* 모달 내용 */}
-            <div className="px-6 py-4 space-y-6">
-              {/* NFC 이미지 */}
-              <div className="text-center">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center mb-2">
-                  <svg
-                    className="w-12 h-12 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600">
-                  NFC 카드를 태그해주세요.
-                </p>
-              </div>
-
-              {/* 결제 정보 표시 */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                  결제 정보
-                </h4>
-                <div className="space-y-1 text-sm text-gray-600">
-                  <div>
-                    금액:{" "}
-                    {(() => {
-                      const amount = getPaymentAmount(selectedEvent);
-                      return amount.currency === "KRW"
-                        ? `₩${amount.value.toLocaleString()}`
-                        : `${amount.value} ${amount.currency}`;
-                    })()}
-                  </div>
-                  <div>결제 수단: {getPaymentMethod(selectedEvent)}</div>
-                  <div>결제 시간: {formatDate(selectedEvent.created)}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* 모달 푸터 */}
-            <div className="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end">
-              <button
-                onClick={closeMembershipModal}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                취소
-              </button>
-              <button
-                onClick={applyMembership}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                적용하기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <MembershipModal
+        isOpen={isModalOpen}
+        selectedEvent={selectedEvent}
+        onClose={closeMembershipModal}
+        setEvents={setEvents}
+      />
     </div>
   );
 }

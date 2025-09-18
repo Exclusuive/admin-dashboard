@@ -43,7 +43,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
 
   const handleAddShop = (name: string) => {
     if (!name.trim()) return;
-    createShop((result) => {
+    createShop(name, (result) => {
       setShops((prev) => [...prev, result]);
     });
     setIsAddOpen(false);

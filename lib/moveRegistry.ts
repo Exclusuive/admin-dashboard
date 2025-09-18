@@ -1,7 +1,7 @@
 export const ORIGIN_PACKAGE_ID =
-  "0x214e062470743dcd5a74f2dec1c74570dd53c5335eaee8396c48869606a67f45";
+  "0x6bec4e9ef2ae26c474423048e5c6785c17deccf3278aac76b2826b42aa05a617";
 export const UPGRADED_PACKAGE_ID =
-  "0x214e062470743dcd5a74f2dec1c74570dd53c5335eaee8396c48869606a67f45";
+  "0x6bec4e9ef2ae26c474423048e5c6785c17deccf3278aac76b2826b42aa05a617";
 
 export const MODULE = {
   RETAIL_SHOP: "retail_shop",
@@ -66,6 +66,8 @@ export const STAMP_REWARD_MODULE_STRUCTS = Object.fromEntries(
 const STAMP_REWARD_MODULE_FUNCTION_NAMES = {
   // New
   newStampCard: "new_stamp_card",
+  addMember: "create_stamp_card_by_shop_owner",
+  grantStamp: "create_stamp_by_shop_owner",
 } as const;
 
 export const STAMP_REWARD_MODULE_FUNCTIONS = Object.fromEntries(

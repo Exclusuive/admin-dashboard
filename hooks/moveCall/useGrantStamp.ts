@@ -1,17 +1,15 @@
 import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { MODULE, STAMP_REWARD_MODULE_FUNCTIONS } from "@/lib/moveRegistry";
 import { UPGRADED_PACKAGE_ID } from "@/lib/moveRegistry";
-import { RetailMembership } from "@/lib/types";
-import { SuiTransactionBlockResponse } from "@mysten/sui/client";
-import { parseAddMemberDigest } from "@/lib/move/parseAddMemberDigest";
-import { formatDate } from "@/lib/webhooks";
+import { WebhookEvent } from "@/lib/types";
 
-export function useAddMember() {
+export function useGrantStamp() {
   const account = useCurrentAccount();
   const client = useSuiClient();
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,18 +26,19 @@ export function useAddMember() {
   });
   const { STAMP_REWARD } = MODULE;
 
-  const addMember = (
-    {
-      shopId,
-      recipient,
-      shopCapId,
-    }: {
-      recipient: string;
-      shopId: string;
-      shopCapId: string;
-    },
-    setResult: (result: RetailMembership) => void
-  ) => {
+  const grantStamp = ({
+    shopId,
+    shopCapId,
+    stampCardId,
+    selectedEvent,
+    setEvents,
+  }: {
+    shopId: string;
+    shopCapId: string;
+    stampCardId: string;
+    selectedEvent: WebhookEvent;
+    setEvents: Dispatch<SetStateAction<WebhookEvent[]>>;
+  }) => {
     setIsPending(true);
     setError(null);
 
@@ -50,11 +49,11 @@ export function useAddMember() {
     tx.moveCall({
       package: UPGRADED_PACKAGE_ID,
       module: STAMP_REWARD,
-      target: STAMP_REWARD_MODULE_FUNCTIONS.addMember,
+      target: STAMP_REWARD_MODULE_FUNCTIONS.grantStamp,
       arguments: [
         tx.object(shopId),
         tx.object(shopCapId),
-        tx.object(recipient),
+        tx.object(stampCardId),
       ],
     });
 
@@ -63,15 +62,15 @@ export function useAddMember() {
         transaction: tx,
       },
       {
-        onSuccess: (data: SuiTransactionBlockResponse) => {
-          const newStampCard = parseAddMemberDigest(data);
-          const newMember: RetailMembership = {
-            id: newStampCard?.id ?? "",
-            status: "Active",
-            joinDate: formatDate(new Date().toISOString()),
-            lastActivity: formatDate(new Date().toISOString()),
-          };
-          setResult(newMember);
+        onSuccess: () => {
+          setEvents((prevEvents: WebhookEvent[]) =>
+            prevEvents.map((evt) =>
+              evt.id === selectedEvent.id
+                ? { ...selectedEvent, membershipApplied: true }
+                : evt
+            )
+          );
+          setIsSuccess(true);
           setIsPending(false);
         },
         onError: (err: Error) => {
@@ -85,7 +84,8 @@ export function useAddMember() {
   };
 
   return {
-    addMember,
+    grantStamp,
+    isSuccess,
     isPending,
     error,
   };

@@ -27,7 +27,10 @@ export function useCreateShop() {
   });
   const { RETAIL_SHOP } = MODULE;
 
-  const createShop = (setResult: (result: RetailShop) => void) => {
+  const createShop = (
+    name: string,
+    setResult: (result: RetailShop) => void
+  ) => {
     setIsPending(true);
     setError(null);
 
@@ -39,7 +42,7 @@ export function useCreateShop() {
       package: UPGRADED_PACKAGE_ID,
       module: RETAIL_SHOP,
       target: SHOP_MODULE_FUNCTIONS.createShop,
-      arguments: [],
+      arguments: [tx.pure.string(name)],
     });
 
     signAndExecuteTransaction(
@@ -49,7 +52,7 @@ export function useCreateShop() {
       {
         onSuccess: (data: SuiTransactionBlockResponse) => {
           const newShop = parseCreateShopDigest(data);
-          setResult(newShop as RetailShop);
+          setResult({ ...newShop, name } as RetailShop);
           setIsPending(false);
         },
         onError: (err: Error) => {

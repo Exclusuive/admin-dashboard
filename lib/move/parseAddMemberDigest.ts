@@ -7,7 +7,9 @@ export type ShopObject = {
         id: {
           id: string;
         };
-        name: string;
+        owner: {
+          AddressOwner: string;
+        };
       };
     };
   };
@@ -24,24 +26,8 @@ export const parseAddMemberDigest = (data: SuiTransactionBlockResponse) => {
     > => change.type === "created"
   );
 
-  console.log(createdObjects);
-
-  // const stampCardObjects = createdObjects.filter(
-  //   (change) =>
-  //     isRetailModule(change.objectType) &&
-  //     getStructName(change.objectType) === "RetailShop"
-  // );
-  // const retailShopCapObjects = createdObjects.filter(
-  //   (change) =>
-  //     isRetailModule(change.objectType) &&
-  //     getStructName(change.objectType) === "RetailShopCap"
-  // );
-
-  // const shop = retailShopObjects[0];
-  // const shopCap = retailShopCapObjects[0];
-
   return {
-    id: "",
-    capId: "",
+    id: createdObjects[0].objectId,
+    owner: createdObjects[0].owner,
   };
 };

@@ -17,15 +17,15 @@ export function MembersTab({
   setMembers,
 }: MembersTabProps) {
   const { addMember } = useAddMember();
-  const { shopId } = useDashboard();
+  const { shopId, shopCapId } = useDashboard();
 
   const handleAddMember = (address: string) => {
-    // addMember(
-    //   { shopId: shopId, recipient: address },
-    //   (result: RetailMembership) => {
-    //     setMembers((prev) => [...prev, result]);
-    //   }
-    // );
+    addMember(
+      { shopId, recipient: address, shopCapId },
+      (result: RetailMembership) => {
+        setMembers([...members, result]);
+      }
+    );
   };
 
   return (
@@ -115,12 +115,6 @@ export function MembersTab({
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => onMemberAction(member.id, "View")}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      View
-                    </button>
-                    <button
                       onClick={() =>
                         onMemberAction(
                           member.id,
@@ -132,12 +126,6 @@ export function MembersTab({
                       className="text-orange-600 hover:text-orange-900"
                     >
                       {member.status === "Active" ? "Deactivate" : "Reactivate"}
-                    </button>
-                    <button
-                      onClick={() => onMemberAction(member.id, "Remove")}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Remove
                     </button>
                   </div>
                 </td>

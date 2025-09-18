@@ -6,15 +6,7 @@ import {
   getMembershipStatus,
   formatDate,
 } from "../../lib/webhooks";
-
-interface WebhookEvent {
-  id: string;
-  type: string;
-  created: string;
-  data: Record<string, unknown>;
-  processed: boolean;
-  error?: string;
-}
+import { WebhookEvent } from "../../lib/types";
 
 export default function EventRow({
   event,
@@ -110,7 +102,7 @@ export default function EventRow({
                 : "bg-green-100 text-green-800"
             }`}
           >
-            {membershipStatus}
+            {event.membershipApplied ? "적립 완료" : membershipStatus}
           </button>
         ) : (
           <span className="text-gray-400 text-xs">-</span>
