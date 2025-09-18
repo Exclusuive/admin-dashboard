@@ -14,6 +14,7 @@ const SHOP_MODULE_STRUCT_NAMES = {
   // Shop
   RetailShop: "RetailShop",
   RetailShopCap: "RetailShopCap",
+  RetailMembershipType: "RetailMembershipType",
 } as const;
 
 export const SHOP_MODULE_STRUCTS = Object.fromEntries(

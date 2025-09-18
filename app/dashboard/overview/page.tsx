@@ -1,10 +1,12 @@
+"use client";
+
 import {
   KPICard,
   TierCard,
   ActivityItem,
-} from "../../components/common/KPICard";
+} from "../../../components/common/KPICard";
 
-export function Overview() {
+export default function OverviewPage() {
   // Mock data for Web3 payment and membership metrics
   const transactionKPIs = {
     totalTransactions: { today: 1247, thisMonth: 45678 },
@@ -37,7 +39,7 @@ export function Overview() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Web3 Payment & Membership Dashboard
+          Web3 Payment & Membership Dashboard (Example)
         </h2>
       </div>
 

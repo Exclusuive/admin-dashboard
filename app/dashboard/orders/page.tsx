@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { StatCard } from "../../components/common/StatCard";
+import { StatCard } from "../../../components/common/StatCard";
 
 interface WebhookEvent {
   id: string;
@@ -150,7 +150,7 @@ const EventRow = memo(
 
 EventRow.displayName = "EventRow";
 
-export function Orders() {
+export default function OrdersPage() {
   const [events, setEvents] = useState<WebhookEvent[]>([]);
   const [stats, setStats] = useState<EventStats | null>(null);
   const [loading, setLoading] = useState(true);

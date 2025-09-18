@@ -5,8 +5,8 @@ import {
   RewardCard,
   Reward,
   getRequirementText,
-} from "../../components/common/RewardCard";
-import { StatCard } from "../../components/common/StatCard";
+} from "../../../components/common/RewardCard";
+import { StatCard } from "../../../components/common/StatCard";
 
 // Sample data
 const sampleRewards: Reward[] = [
@@ -44,7 +44,7 @@ const sampleRewards: Reward[] = [
   },
 ];
 
-export function Rewards() {
+export default function RewardsPage() {
   const [rewards, setRewards] = useState<Reward[]>(sampleRewards);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<

@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { RetailShop } from "@/lib/types";
 import { useSuiClientQuery } from "@mysten/dapp-kit";
 import { SHOP_MODULE_STRUCTS } from "@/lib/moveRegistry";
-import { parseShopObject, ShopObject } from "@/lib/move/parseShopObject";
+import {
+  parseShopCapObject,
+  ShopCapObject,
+  ShopObject,
+} from "@/lib/move/parseShopObject";
 
 export function useGetShops({ owner }: { owner: string | undefined }) {
   const [shops, setShops] = useState<RetailShop[]>([]);
@@ -28,7 +32,7 @@ export function useGetShops({ owner }: { owner: string | undefined }) {
     setIsPending(true);
 
     const parsed = (data.data ?? [])
-      .map((obj) => parseShopObject(obj as unknown as ShopObject))
+      .map((obj) => parseShopCapObject(obj as unknown as ShopCapObject))
       .filter((s): s is RetailShop => s != null);
 
     setShops(parsed);

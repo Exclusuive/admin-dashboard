@@ -3,3 +3,8 @@ export interface RetailShop {
   name?: string;
   capId: string;
 }
+
+export interface RetailMembershipType {
+  name: string;
+  requiredAmountToUpgrade: number;
+}

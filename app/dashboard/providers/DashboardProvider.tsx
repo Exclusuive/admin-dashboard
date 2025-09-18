@@ -1,12 +1,14 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
+import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
+import { createNetworkConfig } from "@mysten/dapp-kit";
+import { getFullnodeUrl } from "@mysten/sui/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface DashboardContextType {
-  activeTab: string;
   shopId: string;
   shopCapId: string;
-  setActiveTab: (tab: string) => void;
   setShopId: (id: string) => void;
   setShopCapId: (id: string) => void;
 
@@ -21,8 +23,14 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
   undefined
 );
 
+const { networkConfig } = createNetworkConfig({
+  localnet: { url: getFullnodeUrl("localnet") },
+  testnet: { url: getFullnodeUrl("testnet") },
+  mainnet: { url: getFullnodeUrl("mainnet") },
+});
+const queryClient = new QueryClient();
+
 export function DashboardProvider({ children }: { children: ReactNode }) {
-  const [activeTab, setActiveTab] = useState("overview");
   const [shopId, setShopId] = useState("");
   const [shopCapId, setShopCapId] = useState("");
 
@@ -33,19 +41,23 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DashboardContext.Provider
-      value={{
-        activeTab,
-        setActiveTab,
-        shopId,
-        shopCapId,
-        setShopId,
-        setShopCapId,
-        stats,
-      }}
-    >
-      {children}
-    </DashboardContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
+        <WalletProvider>
+          <DashboardContext.Provider
+            value={{
+              shopId,
+              shopCapId,
+              setShopId,
+              setShopCapId,
+              stats,
+            }}
+          >
+            {children}
+          </DashboardContext.Provider>
+        </WalletProvider>
+      </SuiClientProvider>
+    </QueryClientProvider>
   );
 }
 
