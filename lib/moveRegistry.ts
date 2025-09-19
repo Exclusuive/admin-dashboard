@@ -1,11 +1,12 @@
 export const ORIGIN_PACKAGE_ID =
-  "0x6bec4e9ef2ae26c474423048e5c6785c17deccf3278aac76b2826b42aa05a617";
+  "0x874ce7b4d400de4566accbca60e6779d35756474a4356c21b715120ca835c33f";
 export const UPGRADED_PACKAGE_ID =
-  "0x6bec4e9ef2ae26c474423048e5c6785c17deccf3278aac76b2826b42aa05a617";
+  "0x874ce7b4d400de4566accbca60e6779d35756474a4356c21b715120ca835c33f";
 
 export const MODULE = {
   RETAIL_SHOP: "retail_shop",
   STAMP_REWARD: "stamp_reward",
+  PAY: "pay",
 } as const;
 
 // =====================================
@@ -87,3 +88,14 @@ export const STAMP_REWARD_EVENTS = Object.fromEntries(
     `${UPGRADED_PACKAGE_ID}::${MODULE.STAMP_REWARD}::${event}`,
   ])
 ) as Record<keyof typeof STAMP_REWARD_EVENT_NAMES, string>;
+
+export const PAY_EVENT_NAMES = {
+  Paid: "Paid",
+} as const;
+
+export const PAY_EVENTS = Object.fromEntries(
+  Object.entries(PAY_EVENT_NAMES).map(([key, event]) => [
+    key,
+    `${UPGRADED_PACKAGE_ID}::${MODULE.RETAIL_SHOP}::${event}`,
+  ])
+) as Record<keyof typeof PAY_EVENT_NAMES, string>;

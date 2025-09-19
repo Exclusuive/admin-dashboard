@@ -57,15 +57,6 @@ export default function EventRow({
               ? `₩${amount.value.toLocaleString()}`
               : `${amount.value} ${amount.currency}`}
           </span>
-          <span
-            className={`px-2 py-1 text-xs rounded-full ${
-              amount.currency === "KRW"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-purple-100 text-purple-800"
-            }`}
-          >
-            {amount.currency === "KRW" ? "₩" : amount.currency}
-          </span>
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

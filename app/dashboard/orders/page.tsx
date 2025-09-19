@@ -5,12 +5,17 @@ import { StatCard } from "../../../components/common/StatCard";
 import EventRow from "../../../components/orders/EventRow";
 import MembershipModal from "../../../components/orders/MembershipModal";
 import { WebhookEvent, EventStats } from "../../../lib/types";
+import { useGetPaidEvents } from "@/hooks/getData/useGetPaidEvents";
 
 export default function OrdersPage() {
-  const [events, setEvents] = useState<WebhookEvent[]>([]);
+  const [web2Events, setWeb2Events] = useState<WebhookEvent[]>([]);
   const [stats] = useState<EventStats | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<WebhookEvent | null>(null);
+  const { events: web3Events, isPending: isWeb3Pending } = useGetPaidEvents();
+
+  // web2와 web3 이벤트를 합친 배열
+  const events = [...web2Events, ...web3Events];
 
   // Open modal
   const openMembershipModal = (event: WebhookEvent) => {
@@ -23,14 +28,17 @@ export default function OrdersPage() {
     setIsModalOpen(false);
     setSelectedEvent(null);
   };
-
   // The membership application logic has been moved inside MembershipModal
 
-  const loadEvents = async () => {
+  const loadWeb2Events = async () => {
     const eventsUrl = "/api/webhooks/events?limit=100";
     const eventsResponse = await fetch(eventsUrl);
     const eventsData = await eventsResponse.json();
-    setEvents(eventsData.events || []);
+    setWeb2Events(eventsData.events || []);
+  };
+
+  const loadEvents = async () => {
+    loadWeb2Events();
   };
 
   return (
@@ -80,7 +88,7 @@ export default function OrdersPage() {
           <h3 className="text-lg font-medium text-gray-900">Webhook Events</h3>
         </div>
 
-        {events.length === 0 ? (
+        {events.length === 0 && !isWeb3Pending ? (
           <div className="p-6 text-center">
             <div className="text-gray-500">No webhook events.</div>
           </div>
@@ -130,7 +138,7 @@ export default function OrdersPage() {
         isOpen={isModalOpen}
         selectedEvent={selectedEvent}
         onClose={closeMembershipModal}
-        setEvents={setEvents}
+        setEvents={setWeb2Events}
       />
     </div>
   );

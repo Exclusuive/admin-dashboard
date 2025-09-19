@@ -25,6 +25,8 @@ export default function MembershipsPage() {
   const [memberships, setMemberships] = useState<RetailMembershipType[]>([]);
   const { shopId, shopCapId } = useDashboard();
   const { createMembershipType } = useCreateMembershipType();
+  console.log("shopId", shopId);
+  console.log("shopCapId", shopCapId);
 
   const { membershipTypes } = useGetMembershipTypes({ id: shopId });
 

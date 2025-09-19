@@ -1,3 +1,5 @@
+import { PaymentIntentDataShape, WebhookEvent } from "./types";
+
 export const EVENT_TYPE_COLORS = {
   "payment_intent.succeeded": "bg-green-100 text-green-800",
   "payment_intent.payment_failed": "bg-red-100 text-red-800",
@@ -43,9 +45,11 @@ export const formatDate = (dateString: string): string => {
 
 export const getMembershipStatus = (event: { type: string }): string | null => {
   if (event.type === "payment_intent.succeeded") {
-    return "적립하기";
+    return "Grant Stamp";
   } else if (event.type === "payment_intent.payment_failed") {
     return null;
+  } else if (event.type === "web3") {
+    return "Stamp Granted";
   } else if (event.type.includes("subscription")) {
     return "구독 관리";
   } else {
@@ -53,27 +57,14 @@ export const getMembershipStatus = (event: { type: string }): string | null => {
   }
 };
 
-interface PaymentMethodData {
-  type?: string;
-}
-
-interface PaymentIntentObjectShape {
-  amount?: number;
-  currency?: string;
-  payment_method?: PaymentMethodData;
-}
-
-interface PaymentIntentDataShape {
-  object?: PaymentIntentObjectShape;
-}
-
-export const getPaymentAmount = (event: {
-  type: string;
-  data: Record<string, unknown>;
-}): { value: number; currency: string } => {
+export const getPaymentAmount = (
+  event: WebhookEvent
+): { value: number; currency: string } => {
+  console.log("event", event);
   if (
     event.type === "payment_intent.succeeded" ||
-    event.type === "payment_intent.payment_failed"
+    event.type === "payment_intent.payment_failed" ||
+    event.type === "web3"
   ) {
     const data = event.data as PaymentIntentDataShape;
     const object = data.object;
@@ -87,10 +78,7 @@ export const getPaymentAmount = (event: {
   return { value: 0, currency: "KRW" };
 };
 
-export const getPaymentMethod = (event: {
-  type: string;
-  data: Record<string, unknown>;
-}): string => {
+export const getPaymentMethod = (event: WebhookEvent): string => {
   if (
     event.type === "payment_intent.succeeded" ||
     event.type === "payment_intent.payment_failed"
