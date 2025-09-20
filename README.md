@@ -1,36 +1,205 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Admin Dashboard
+
+This project is an admin dashboard built with Next.js. It includes Stripe payment system and webhook monitoring functionality.
+
+## Table of Contents
+
+1. [Getting Started](#getting-started)
+2. [Stripe Setup](#stripe-setup)
+3. [Testing](#testing)
+4. [Features](#features)
+5. [API Endpoints](#api-endpoints)
+6. [Production Deployment](#production-deployment)
+7. [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18.0 or higher
+- npm, yarn, pnpm, or bun
+
+### Installation and Running
+
+1. **Install Dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+2. **Run Development Server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
+
+3. **View in Browser**
+
+   You can view the application at [http://localhost:3000](http://localhost:3000).
+
+### Project Structure
+
+## Stripe Setup
+
+### 1. Environment Variables Setup
+
+Create a `.env.local` file in the project root and set the following environment variables:
+
+```env
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+
+# Stripe CLI Configuration (for development)
+STRIPE_CLI_WEBHOOK_SECRET=whsec_your_cli_webhook_secret_here
+
+# Next.js Configuration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key_here
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Stripe Dashboard Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### 2.1 Create Webhook Endpoint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Log in to [Stripe Dashboard](https://dashboard.stripe.com)
+2. Navigate to **Developers** > **Webhooks**
+3. Click **Add endpoint**
+4. Enter the following URL in **Endpoint URL**:
+   ```
+   https://yourdomain.com/api/webhooks/stripe
+   ```
+   (For local development: `http://localhost:3000/api/webhooks/stripe`)
 
-## Learn More
+#### 2.2 Select Events
 
-To learn more about Next.js, take a look at the following resources:
+Select the following events:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `payment_intent.succeeded`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 2.3 Copy Webhook Secret
 
-## Deploy on Vercel
+After creating the webhook endpoint, copy the **Signing secret** and set it to `STRIPE_WEBHOOK_SECRET` in `.env.local`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Testing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Using Stripe CLI (Recommended)
+
+#### 1.1 Install and Setup Stripe CLI
+
+```bash
+# Install Stripe CLI (macOS)
+brew install stripe/stripe-cli/stripe
+
+# Login
+stripe login
+
+# Forward webhooks (for local development)
+stripe listen --forward-to localhost:3000/api/webhooks/stripe --events payment_intent.succeeded
+```
+
+**Important**: When you run the `stripe listen` command, a webhook secret will be displayed in the terminal. Copy this value to `STRIPE_CLI_WEBHOOK_SECRET` in your `.env.local` file.
+
+Example:
+
+```
+> Ready! Your webhook signing secret is whsec_1234567890abcdef...
+```
+
+#### 1.2 Send Test Events
+
+```bash
+# Test payment success event
+stripe trigger payment_intent.succeeded
+
+```
+
+### 2. Webhook Monitoring
+
+1. Navigate to `http://localhost:3000/dashboard/orders` in your browser
+2. You can monitor real-time webhook events
+
+## API Endpoints
+
+### 1. Webhook Reception
+
+```
+POST /api/webhooks/stripe
+```
+
+### 2. Event Query
+
+```
+GET /api/webhooks/events
+GET /api/webhooks/events?type=payment_intent.succeeded
+GET /api/webhooks/events?limit=100
+GET /api/webhooks/events?stats=true
+```
+
+## Troubleshooting
+
+### 1. Webhooks Not Being Received
+
+1. Check webhook URL in Stripe Dashboard
+2. Verify environment variable settings
+3. Check server logs
+
+### 2. Signature Verification Failed
+
+1. Check `STRIPE_WEBHOOK_SECRET` value
+2. Verify that the Webhook Secret is correct
+
+### 3. Events Not Displaying
+
+1. Check network requests in browser developer tools
+2. Verify API endpoint responses
+
+### 4. Stripe CLI trigger Command Not Working
+
+**Problem**: Webhooks not being received when testing with `stripe trigger` command
+
+**Solution**:
+
+1. **Check Stripe CLI webhook secret**:
+
+   ```bash
+   # Copy the secret displayed when running stripe listen in terminal
+   stripe listen --forward-to localhost:3000/api/webhooks/stripe
+   ```
+
+2. **Set Environment Variables**:
+
+   ```env
+   # Add to .env.local file
+   STRIPE_CLI_WEBHOOK_SECRET=whsec_your_cli_webhook_secret_here
+   ```
+
+3. **Restart Server**:
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Test**:
+   ```bash
+   stripe trigger payment_intent.succeeded
+   ```
+
+**Note**: The Stripe CLI `trigger` command uses the webhook secret generated by `stripe listen`. This is different from the webhook secret created in the Stripe Dashboard.
+
+## Security Considerations
+
+1. **Webhook Secret Verification**: All webhook requests are signature verified
+2. **Use HTTPS**: Always use HTTPS in production
+3. **Environment Variable Security**: Add `.env.local` file to `.gitignore`
