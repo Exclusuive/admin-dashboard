@@ -114,7 +114,7 @@ brew install stripe/stripe-cli/stripe
 stripe login
 
 # Webhook 포워딩 (로컬 개발용)
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
+stripe listen --forward-to localhost:3000/api/webhooks/stripe --events payment_intent.succeeded
 ```
 
 **중요**: `stripe listen` 명령어를 실행하면 터미널에 webhook secret이 표시됩니다. 이 값을 `.env.local` 파일의 `STRIPE_CLI_WEBHOOK_SECRET`에 복사하세요.

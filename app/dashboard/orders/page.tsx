@@ -12,7 +12,11 @@ export default function OrdersPage() {
   const [stats] = useState<EventStats | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<WebhookEvent | null>(null);
-  const { events: web3Events, isPending: isWeb3Pending } = useGetPaidEvents();
+  const {
+    events: web3Events,
+    isPending: isWeb3Pending,
+    refetch,
+  } = useGetPaidEvents();
 
   // web2와 web3 이벤트를 합친 배열
   const events = [...web2Events, ...web3Events];
@@ -39,6 +43,7 @@ export default function OrdersPage() {
 
   const loadEvents = async () => {
     loadWeb2Events();
+    refetch();
   };
 
   return (

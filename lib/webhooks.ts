@@ -51,7 +51,7 @@ export const getMembershipStatus = (event: { type: string }): string | null => {
   } else if (event.type === "web3") {
     return "Stamp Granted";
   } else if (event.type.includes("subscription")) {
-    return "구독 관리";
+    return "Manage Subscription";
   } else {
     return null;
   }

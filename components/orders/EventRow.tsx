@@ -20,9 +20,9 @@ export default function EventRow({
   const membershipStatus = getMembershipStatus(event);
   const displayMembershipStatus = event.membershipApplied
     ? "Stamp Granted"
-    : membershipStatus === "적립하기"
+    : membershipStatus === "Grant Stamp"
     ? "Grant Stamp"
-    : membershipStatus === "구독 관리"
+    : membershipStatus === "Manage Subscription"
     ? "Manage Subscription"
     : membershipStatus ?? "";
 
@@ -88,12 +88,12 @@ export default function EventRow({
         {membershipStatus ? (
           <button
             onClick={() =>
-              membershipStatus === "적립하기" && openMembershipModal(event)
+              membershipStatus === "Grant Stamp" && openMembershipModal(event)
             }
             className={`px-3 py-1 text-xs rounded-full ${
-              membershipStatus === "적립하기"
+              membershipStatus === "Grant Stamp"
                 ? "bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
-                : membershipStatus === "구독 관리"
+                : membershipStatus === "Manage Subscription"
                 ? "bg-yellow-100 text-yellow-800"
                 : "bg-green-100 text-green-800"
             }`}

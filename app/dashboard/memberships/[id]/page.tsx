@@ -10,9 +10,7 @@ import {
   TabsTrigger,
 } from "../../../../components/ui/tabs";
 import { MembersTab } from "../../../../components/memberships/MembersTab";
-import { SettingsTab } from "../../../../components/memberships/SettingsTab";
 import { ActivityTab } from "../../../../components/memberships/ActivityTab";
-import { useAddMember } from "@/hooks/moveCall/useAddMember";
 import { RetailMembership } from "@/lib/types";
 
 // 임시: 목록 페이지의 mock 데이터와 동일 구조
@@ -169,7 +167,7 @@ export default function MembershipDetailPage() {
       <div className="bg-white rounded-lg shadow">
         <Tabs defaultValue="members" className="w-full">
           <div className="border-b border-gray-200 px-6">
-            <TabsList className="grid w-full grid-cols-3 bg-transparent p-0 h-auto">
+            <TabsList className="grid w-full grid-cols-2 bg-transparent p-0 h-auto">
               <TabsTrigger
                 value="members"
                 className="flex items-center space-x-2 py-4 px-1 border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500 hover:text-gray-700 hover:border-gray-300 rounded-none"
@@ -177,13 +175,7 @@ export default function MembershipDetailPage() {
                 <span>👥</span>
                 <span>Members</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="settings"
-                className="flex items-center space-x-2 py-4 px-1 border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500 hover:text-gray-700 hover:border-gray-300 rounded-none"
-              >
-                <span>⚙️</span>
-                <span>Settings</span>
-              </TabsTrigger>
+
               <TabsTrigger
                 value="activity"
                 className="flex items-center space-x-2 py-4 px-1 border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500 hover:text-gray-700 hover:border-gray-300 rounded-none"
@@ -201,10 +193,6 @@ export default function MembershipDetailPage() {
                 onMemberAction={handleMemberAction}
                 setMembers={setMembers}
               />
-            </TabsContent>
-
-            <TabsContent value="settings">
-              <SettingsTab membership={membership} />
             </TabsContent>
 
             <TabsContent value="activity">

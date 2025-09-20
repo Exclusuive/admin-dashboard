@@ -8,8 +8,9 @@ export function useGetPaidEvents() {
   const [events, setEvents] = useState<WebhookEvent[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error] = useState<string | null>(null);
+  const [refetchSwitch, setRefetchSwitch] = useState(false);
 
-  const { data } = useSuiClientQuery("queryEvents", {
+  const { data, refetch: refetchEvents } = useSuiClientQuery("queryEvents", {
     query: {
       MoveEventModule: {
         module: MODULE.PAY,
@@ -17,6 +18,17 @@ export function useGetPaidEvents() {
       },
     },
   });
+
+  const refetch = () => {
+    setRefetchSwitch((prev) => !prev);
+  };
+
+  // refetchSwitch가 변경될 때 쿼리들을 다시 실행
+  useEffect(() => {
+    if (refetchSwitch !== undefined) {
+      refetchEvents();
+    }
+  }, [refetchSwitch, refetchEvents]);
 
   useEffect(() => {
     if (!data) {
@@ -53,5 +65,6 @@ export function useGetPaidEvents() {
     events,
     isPending,
     error,
+    refetch,
   };
 }
