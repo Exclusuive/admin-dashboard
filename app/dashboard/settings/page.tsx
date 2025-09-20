@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function Settings() {
+export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<"settings" | "billing">(
     "settings"
   );
